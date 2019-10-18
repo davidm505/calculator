@@ -1,4 +1,29 @@
-let numbers = [];
+const calculator = {
+    history: null,
+    num1: null,
+    num2: null, 
+    operator: null,
+    total: null,
+}
+
+const display = document.querySelector('#display');
+
+const clearButton = document.querySelector("#clear");
+
+const inputButtons = document.querySelectorAll(".input");
+
+const operatorButtons = document.querySelectorAll(".operator");
+
+const equalButton = document.querySelector('#equals');
+
+clearButton.addEventListener('click', clearDisplay);
+
+inputButtons.forEach(button => button.addEventListener("click", addToDisplay));
+
+operatorButtons.forEach(button => button.addEventListener('click', handleOperators));
+
+equalButton.addEventListener('click', handleEqual);
+
 
 function add(num1, num2) {
     return num1 + num2;
@@ -33,52 +58,81 @@ function operate(operator, num1, num2) {
     };
 }
 
-function addToDisplay(e) {
-    let display = document.querySelector('#display');
-    display.value += e.target.value;
+function addToCalc(e) {
+    if(!calculator.num1) {
+        calculator.num1 = Number(e);
+        console.log('Num1 is: ' + calculator.num1);
+    }
+    else {
+        calculator.num2 = Number(e);
+        console.log('Num2 is: ' + calculator.num2);
+    }
 }
 
-let inputButtons = document.querySelectorAll(".input");
-inputButtons.forEach(button => button.addEventListener("click", addToDisplay));
+function addToDisplay(e) {
+    display.innerHTML += e.target.value;
+}
 
-let operatorButtons = document.querySelectorAll(".operator");
-operatorButtons.forEach(button => button.addEventListener('click', function(e) {
-    let display = document.querySelector("#display");
-    // numbers.push(display.value);
+function clearDisplay() {
+    display.innerHTML = '';
+    calculator.num1 = null;
+    calculator.num2 = null;
+    calculator.operator = null;
+    calculator.total = null;
+}
 
-    addToDisplay(e);
-}));
+function handleOperators(e) {
+    let oIndex = 0;
+    
+    if(!calculator.operator) {
+        console.log(calculator);
 
-let clearButton = document.querySelector("#clear");
-clearButton.addEventListener('click', function(){
-    let display = document.querySelector('#display');
-    display.value = '';
-    numbers = [];
-})
+        addToDisplay(e);
 
-let equalButton = document.querySelector('#equals');
-equalButton.addEventListener('click', function() {
-    let display = document.querySelector("#display");
-    let value = display.value;
-
-    let operators = ['x', '+', '-', '/'];
-
-    let temp = '';
-    for(let item in value) {
-        if(operators.indexOf(value[item]) == -1) 
-            temp += value[item];
-        else {
-            numbers.push(Number(temp));
-            numbers.push(value[item]);
-            temp = '';
-        }
+        oIndex = display.innerHTML.indexOf(e.target.value);
+        
+        calculator.operator = e.target.value;
+        
+        addToCalc(display.innerHTML.slice(0,oIndex));
     }
+    else {
+        oIndex = display.innerHTML.indexOf(calculator.operator);
+        
+        addToCalc(display.innerHTML.slice(oIndex + 1,-1));
+        
+        calculator.total = operate(calculator.operator, calculator.num1, calculator.num2);
+        
+        calculator.history = display.innerHTML.slice(0,-1);
 
-    numbers.push(Number(temp));
+        display.innerHTML = calculator.total;
 
-    console.log(numbers);
+        addToDisplay(e);
+        
+        calculator.num1 = calculator.total;
+        calculator.num2 = null;
+        calculator.operator = e.target.value;
 
-    if(numbers.length == 3) {
-        display.value = operate(numbers[1], numbers[0], numbers[2]);
+        console.log(calculator);
     }
-})
+}
+
+function handleEqual() {
+    let value = display.innerHTML;
+    
+    const operators = ['x', '+', '-', '/'];
+    
+    let oIndex = value.indexOf(calculator.operator);
+    
+    addToCalc(value.slice(oIndex + 1));
+    
+    calculator.total = operate(calculator.operator, calculator.num1, calculator.num2);
+    
+    calculator.history = value;
+    
+    console.log(calculator);
+    
+    display.innerHTML = calculator.total;
+    calculator.num1 = calculator.total;
+    calculator.num2 = null;
+    calculator.operator = null;
+}
