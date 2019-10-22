@@ -1,0 +1,75 @@
+body {
+    background-color: rgb(32, 32, 32);
+}
+
+button {
+    margin: 0.1rem;
+    outline:none;
+    
+}
+
+button::-moz-focus-inner {
+    border: 0;
+}
+
+.operator {
+    background-color: rgb(226, 136, 0);
+    border: 0px;
+}
+
+.operator:hover {
+    background-color: rgb(255, 153, 0);
+}
+
+.input,
+.decimal {
+    background-color: rgb(240, 240, 240);
+    border-width: 5px 17px;
+    border-color: rgba(255, 228, 196, 0);
+}
+
+.input:hover,
+.decimal:hover {
+    background-color: rgb(255, 255, 255);
+}
+
+#container {
+    margin-top: 3rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    height: 300px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+#display {
+    margin: 0.1rem;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    color: rgb(22, 22, 22);
+    text-align: right;
+    background-color: rgb(255, 255, 255);
+    vertical-align: middle;
+}
+
+#clear {
+    background-color: rgb(199, 199, 199);
+    border-width: 5px 17px;
+    border-color: rgba(255, 228, 196, 0);
+}
+
+#clear:hover {
+    background-color: rgb(212, 1, 1);
+}
+
+#equals {
+    background-color: rgb(92, 233, 57);
+    border-width: 5px 17px;
+    border-color: rgba(255, 235, 205, 0);
+}
+
+#equals:hover {
+    background-color: rgb(92, 255, 57);
+}
