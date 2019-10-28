@@ -35,7 +35,6 @@ decimalButton.addEventListener('click', function(e) {
 
   if(!calculator.operator){
     for(let i of value){
-      console.log(i);
       if(i == '.')
         dUsed = true;
     }
@@ -45,8 +44,6 @@ decimalButton.addEventListener('click', function(e) {
     let afterOp = value.slice(oIndex + 1);
 
     for(let i of afterOp){
-      console.log('after op' + i);
-
       if(i == '.'){
         dUsed = true;
       }
@@ -58,22 +55,29 @@ decimalButton.addEventListener('click', function(e) {
 })
 
 function add(num1, num2) {
-  return num1 + num2;
+  return (num1 + num2).toFixed(2);
 }
 
 function subtract(num1, num2) {
-  return num1 - num2;
+  return (num1 - num2).toFixed(2);
 }
 
 function multiply(num1, num2) {
   let value = num1 * num2;
-  return value;
+
+  return value.toFixed(2);
 }
 
 function divide(num1, num2) {
-  if(num2 == 0)
+  if(num1 == 0) {
+    return 0;
+  }
+
+  else if(num2 == 0)
     return "Bad Boy!";
-  return num1 / num2;
+
+  else  
+    return (num1 / num2).toFixed(2);
 }
 
 function operate(operator, num1, num2) {
@@ -92,17 +96,13 @@ function operate(operator, num1, num2) {
 }
 
 function addToCalc(e) {
-  if(e == null)
+  if(e === null)
     e = '0';
 
-  console.log(e);
-
-  if (!calculator.num1) {
+  if (calculator.num1 == null) {
     calculator.num1 = Number(e);
-    console.log("Num1 is: " + calculator.num1);
   } else {
     calculator.num2 = Number(e);
-    console.log("Num2 is: " + calculator.num2);
   }
 }
 
@@ -130,8 +130,6 @@ function handleOperators(e) {
       calculator.operator = e.target.value;
       
       addToCalc(display.innerHTML.slice(0, oIndex));
-  
-      console.log(calculator);
     } else {
       oIndex = display.innerHTML.indexOf(calculator.operator);
   
@@ -152,10 +150,7 @@ function handleOperators(e) {
       calculator.num1 = calculator.total;
       calculator.num2 = null;
       calculator.operator = e.target.value;
-  
-      console.log(calculator);
     }
-
   }
 }
 
@@ -179,6 +174,4 @@ function handleEqual() {
   calculator.num1 = calculator.total;
   calculator.num2 = null;
   calculator.operator = null;
-
-  console.log(calculator);
 }
